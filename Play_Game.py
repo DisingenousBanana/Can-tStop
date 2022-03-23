@@ -1,3 +1,4 @@
+import check
 import Dice
 import Player
 import Game
@@ -60,8 +61,11 @@ def mutator4(L1,s1,L2,s2,L3,s3,L4,s4):
     dic1[items]=""
     dic1[items]=s4
   return dic1  
-
+  
 def load_game(file_name):
+  fin=open(file_name,'r')
+  L1=fin.readlines()
+  fin.close()
   L2=[]
   for items in L1:
     if "\n" in items:
@@ -109,7 +113,11 @@ def load_game(file_name):
   g=Game.Game([L])
   g.players=[]
 
+
+#print(load_game("initial2-expected.txt"))
 def play_game():
+  
+  
   welcome = "WELCOME TO CAN'T STOP"
   debug_prompt = "Enter D for debug mode, anything else for random play. "
   debug_yes = ['d', 'D']
@@ -123,8 +131,9 @@ def play_game():
   name_message5_prompt = "Enter player name (first letter must be unique): "
   name_message6_prompt = 'Each player name must start with a different letter. Enter a different name. '
   num_player_prompt = "Enter the number of players [2-4]: "   
-  invalid_num_player = "You entered '{0}' which is not acceptable." 
+  invalid_num_player = "You entered '{0}' which is not acceptable."  # Use format to add what was entered for number 
   load_file_prompt = "Enter filename to load game from: "
+  
   
   print(welcome)
   s=input(debug_prompt)
@@ -132,9 +141,9 @@ def play_game():
     debug=True
     print("Playing debug mode - be prepared to enter all die values.")
     s1=input(game_prompt)
-    if s1=="R" or s1=="r":
+    if s=="R" or s=="r":
      s4=input(load_file_prompt)
-     g=load_game(s4)
+     load_file(s4)
     else:
      print(name_message1)
      print(name_message2)
@@ -187,9 +196,9 @@ def play_game():
   else:
    debug=False
    s1=input(game_prompt)
-   if s1=="R" or s1=="r":
+   if s=="R" or s=="r":
      s4=input(load_file_prompt)
-     g=load_game(s4)
+     load_file(s4)
    else:
      print(name_message1)
      print(name_message2)
@@ -211,34 +220,38 @@ def play_game():
          L1+=[s3]
          p+=1
        g=Game.Game(L1)
-       if int(s2)==3:
-        print(name_message3)
-        print(name_message4)
-        L=[]
-        L1=[]
-        p=0
-        while p<=2:
-          s3=input(name_message5_prompt)
-          while s3[0] in L:
-            s3=input(name_message6_prompt)
-          L+=s3[0]
-          L1+=s3
-          p+=1
+     if int(s2)==3:
+       print(name_message3)
+       print(name_message4)
+       L=[]
+       L1=[]
+       p=0
+       while p<=2:
+         s3=input(name_message5_prompt)
+         while s3[0] in L:
+           s3=input(name_message6_prompt)
+         L+=s3[0]
+         L1+=s3
+         p+=1
        g=Game.Game(L1)
-       if int(s2)==4:
-        print(name_message3)
-        print(name_message4)
-        L=[]
-        L1=[]
-        p=0
-        while p<=3:
-          s3=input(name_message5_prompt)
-          while s3[0] in L:
-            s3=input(name_message6_prompt)
-          L+=s3[0]
-          L1+=s3
-          p+=1
+     if int(s2)==4:
+       print(name_message3)
+       print(name_message4)
+       L=[]
+       L1=[]
+       p=0
+       while p<=3:
+         s3=input(name_message5_prompt)
+         while s3[0] in L:
+           s3=input(name_message6_prompt)
+         L+=s3[0]
+         L1+=s3
+         p+=1
        g=Game.Game(L1)
+  
+
   over = False
   while not over: 
       over = g.take_turn(debug)
+
+play_game()
